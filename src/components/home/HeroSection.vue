@@ -1,4 +1,5 @@
 <script setup>
+import Navbar from '../layout/Navbar.vue';
 import ButtonBase from '../ui/ButtonBase.vue';
 import { ArrowRight, UserPlus, Download, Mail } from 'lucide-vue-next';
 import { onMounted, ref } from 'vue';
@@ -30,16 +31,14 @@ onMounted(() => {
 </script>
 
 <template>
+  <Navbar />
     <div class=" bg-red-500 h-screen relative">
         <img src="../../assets/images/home/heroImg.png" class="img-bg-cover" alt="">
         <div class="overlay flex justify-center items-center">
-            <div class="text-center space-y-4">
+            <div class="text-center space-y-6">
                 <h1 ref="heroText" class="text-white font-poppins">Shahidullah Hall</h1>
                 <h2 ref="heroSubText" class="text-white font-poppins">Alumni Association</h2>
-                <ButtonBase label="Become a Member" :icon="ArrowRight" iconSize="20" />
-                <ButtonBase label="Become a Member" :icon="UserPlus" iconSize="20" />
-                <ButtonBase label="Become a Member" :icon="Download" iconSize="20" />
-                <ButtonBase label="Become a Member" :icon="Mail" iconSize="20" />
+                <ButtonBase class="mx-auto" label="Become a Member" :icon="ArrowRight" iconSize="20" />
             </div>
         </div>
     </div>
