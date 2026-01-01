@@ -1,7 +1,8 @@
 <script setup>
 import HeroSection from '../components/home/HeroSection.vue';
 import AboutSection from '../components/home/AboutSection.vue';
-import StatSection from '../components/shared/StatSection.vue';
+import StatSection from '../components/home/StatSection.vue';
+import BenefitsSection from '../components/home/BenefitsSection.vue';
 import GallerySection from '../components/home/GallerySection.vue';
 </script>
 
@@ -10,6 +11,7 @@ import GallerySection from '../components/home/GallerySection.vue';
     <HeroSection />
     <AboutSection />
     <StatSection />
+    <BenefitsSection />
     <GallerySection />
   </main>
 </template>

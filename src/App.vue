@@ -1,12 +1,14 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
 import Navbar from './components/layout/Navbar.vue';
-import Hero from './components/home/Hero.vue';
+import Footer from './components/layout/Footer.vue';
 </script>
 
 <template>
-  <!-- <Navbar></Navbar> -->
-  <Hero></Hero>
+  <div class="flex flex-col min-h-screen">
+    <Navbar />
+    <RouterView class="grow" />
+    <Footer />
+  </div>
 </template>
 
 <style scoped>

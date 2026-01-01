@@ -31,8 +31,8 @@ onMounted(() => {
 </script>
 
 <template>
-  <Navbar />
-    <div class=" bg-red-500 h-screen relative">
+  <!-- <Navbar /> -->
+    <div class=" bg-red-500 h-[calc(100vh-80px)] relative">
         <img src="../../assets/images/home/heroImg.png" class="img-bg-cover" alt="">
         <div class="overlay flex justify-center items-center">
             <div class="text-center space-y-6">
