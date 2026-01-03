@@ -1,51 +1,71 @@
 <script setup>
-import { ref, onMounted, watch } from 'vue';
+import { ref, watch, onUnmounted } from 'vue';
 import gsap from 'gsap';
 import { X, ArrowRight } from 'lucide-vue-next';
 import ButtonBase from '../ui/ButtonBase.vue';
 
+// 1. Props & Emits
 const props = defineProps({
   isOpen: Boolean
 });
 
 const emit = defineEmits(['close']);
 
-// Refs for GSAP targets
+// 2. Data Definitions
+const links = [
+  { name: 'Home', path: '/' },
+  { name: 'About', path: '/about' },
+  { name: 'Member', path: '/members' },
+  { name: 'Contact', path: '/contact' }
+];
+
+// 3. Refs for Animation
 const menuOverlay = ref(null);
 const menuContent = ref(null);
-const navLinks = ref([]);
+const navLinksRefs = ref([]); 
 
-// Animation Logic
+// 4. Animation Function
 const runAnimation = () => {
   const tl = gsap.timeline();
 
-  // 1. Slide in the main drawer
   tl.fromTo(menuContent.value, 
     { x: '100%' }, 
     { x: '0%', duration: 0.6, ease: 'power3.out' }
   );
 
-  // 2. Staggered fade-in for links
-  tl.fromTo(navLinks.value, 
+  tl.fromTo(navLinksRefs.value, 
     { opacity: 0, y: 20 },
     { opacity: 1, y: 0, duration: 0.4, stagger: 0.1, ease: 'power2.out' },
-    "-=0.3" // Start slightly before drawer finishes
+    "-=0.3"
   );
 };
 
-// Watch for the isOpen prop to trigger animations
+// 5. Watcher: Handle Open/Close state
 watch(() => props.isOpen, (newVal) => {
   if (newVal) {
-    // Small timeout to ensure DOM is rendered before animating
+    // Wait for render, then animate
     setTimeout(runAnimation, 10);
-    // Prevent scrolling when menu is open
+    // Lock scroll
     document.body.style.overflow = 'hidden';
   } else {
+    // Unlock scroll
     document.body.style.overflow = 'auto';
   }
 });
 
+// 6. SAFETY FIX: Unlock scroll if component is destroyed (e.g. route change)
+onUnmounted(() => {
+  document.body.style.overflow = 'auto';
+});
+
+// 7. Close Function
 const closeMenu = () => {
+  // If menuContent is null (already closed/destroyed), just emit close
+  if (!menuContent.value) {
+    emit('close');
+    return;
+  }
+
   gsap.to(menuContent.value, {
     x: '100%',
     duration: 0.5,
@@ -74,18 +94,21 @@ const closeMenu = () => {
         </div>
 
         <nav class="flex flex-col gap-6">
-          <a v-for="(link, index) in ['Home', 'About', 'Member', 'Contact']" 
-             :key="link"
-             :ref="el => navLinks[index] = el"
-             href="#" 
-             class="text-2xl font-display font-semibold text-primary-dark hover:text-primary transition-colors"
-             @click="closeMenu"
+          <router-link 
+            v-for="(link, index) in links" 
+            :key="link.name"
+            :to="link.path"
+            :ref="el => { if(el) navLinksRefs[index] = el.$el }" 
+            class="text-2xl font-display font-semibold text-gray-600 transition-colors flex items-center gap-2"
+            active-class="text-primary font-bold" 
+            @click="closeMenu"
           >
-            + {{ link }}
-          </a>
+            <span>+ {{ link.name }}</span>
+            <span v-if="$route.path === link.path" class="w-2 h-2 rounded-full bg-primary mt-1"></span>
+          </router-link>
         </nav>
 
-        <div :ref="el => navLinks[4] = el" class="mt-auto pt-10">
+        <div :ref="el => navLinksRefs[4] = el" class="mt-auto pt-10">
           <ButtonBase 
             label="Become a member" 
             :icon="ArrowRight" 

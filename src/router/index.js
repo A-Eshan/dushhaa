@@ -1,6 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import AboutView from '../views/AboutView.vue'
+import { Contact } from 'lucide-vue-next'
+import ContactView from '../views/ContactView.vue'
+import MemberView from '../views/MemberView.vue'
 
 const router = createRouter({
   history: createWebHistory(),
@@ -14,6 +17,16 @@ const router = createRouter({
       path: '/about',
       name: 'about',
       component: AboutView 
+    },
+    {
+      path: '/contact',
+      name: 'contact',
+      component: ContactView 
+    },
+    {
+      path: '/members',
+      name: 'members',
+      component: MemberView
     }
   ]
 })

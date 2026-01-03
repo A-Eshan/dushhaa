@@ -4,10 +4,10 @@ import ButtonStroke from '../ui/ButtonStroke.vue';
 
 // Define the links here so they are easy to update later
 const navLinks = [
-  { name: 'Home', href: '#' },
-  { name: 'About', href: '#' },
-  { name: 'Member', href: '#' },
-  { name: 'Contact', href: '#' }
+  { name: 'Home', path: '/' },
+  { name: 'About', path: '/about' },
+  { name: 'Member', path: '/members' },
+  { name: 'Contact', path: '/contact' }
 ];
 </script>
 
@@ -16,18 +16,23 @@ const navLinks = [
     
     <ul class="flex items-center gap-8">
       <li v-for="link in navLinks" :key="link.name">
-        <a 
-          :href="link.href" 
+        
+        <router-link 
+          :to="link.path" 
           class="relative text-sm font-medium text-gray-600 hover:text-primary transition-colors duration-300 group"
+          active-class="text-primary font-bold" 
         >
-        {{ link.name }}
+          {{ link.name }}
           
           <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
-        </a>
+          
+          <span v-if="$route.path === link.path" class="absolute -bottom-1 left-0 w-full h-0.5 bg-primary"></span>
+        </router-link>
+
       </li>
     </ul>
 
-    <div class="h-6 w-[1px] bg-gray-200"></div>
+    <div class="h-6 w-px bg-gray-200"></div>
 
     <ButtonStroke 
       label="Become a member" 
